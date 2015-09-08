@@ -6,7 +6,7 @@ Requires=docker.socket
 
 [Service]
 Type=notify
-ExecStart=/usr/bin/docker daemon -H fd:// --default-network=overlay:multihost --kv-store=consul:192.168.88.100:8500 --label com.docker.network.driver.overlay.bind_interface=eth1 --label com.docker.network.driver.overlay.neighbor_ip=192.168.88.101
+ExecStart=/usr/bin/docker daemon -H fd:// -H tcp://0.0.0.0:2375 --default-network=overlay:multihost --kv-store=consul:192.168.88.100:8500 --label com.docker.network.driver.overlay.bind_interface=eth1 --label com.docker.network.driver.overlay.neighbor_ip=192.168.88.101
 MountFlags=slave
 LimitNOFILE=1048576
 LimitNPROC=1048576

@@ -48,3 +48,28 @@
   notify:
     - Reload Systemd
     - Restart Docker
+
+- name: Run Swarm Controller
+  docker:
+    name: swarm-controller
+    image: swarm
+    state: started
+    restart_policy: always
+    ports:
+      - "3375:3375"
+    command: manage -H tcp://0.0.0.0:3375 --strategy spread consul://192.168.88.100:8500
+    net: host
+    hostname: swarm-controller
+  when: infra_host is defined
+
+- name: Run Swarm Agents
+  docker:
+    image: swarm
+    name: swarm-{{ansible_hostname}}
+    hostname: swarm-{{ansible_hostname}}
+    state: started
+    restart_policy: always
+    ports:
+      - "3375:3375"
+    command: join  --addr {{ ansible_eth1.ipv4.address }}:2375 consul://192.168.88.100:8500
+  when: infra_host is undefined

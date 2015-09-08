@@ -1,0 +1,50 @@
+---
+# tasks file for docker
+- name: Install Docker GPG Key
+  apt_key: id={{ docker_gpg_key_id }} state=present keyserver={{ docker_gpg_key_server }}
+
+- name: Add Docker APT Repository
+  apt_repository: repo='{{ docker_apt_repository_url }}' state=present
+
+- name: Install CURL
+  apt: name=curl state=installed
+
+- name: Install Kernel Extras for AUFS support
+  apt: name=linux-image-extra-{{ ohai_os_version }} update_cache=yes
+
+- name: Install Docker Engine
+  apt: name="docker-engine={{docker_engine_version}}" state=installed update_cache=yes
+
+#- name: Start Docker Server
+#  service: name=docker state=started
+
+- name: Install python-pip
+  apt: name=python-pip state=absent
+
+- name: Install Easy_Install
+  apt: name=python-setuptools state=present
+
+- name: Install Docker-Py
+  easy_install: name=docker-py
+
+- name: Run Consul Container
+  docker:
+    name: consul
+    image: progrium/consul
+    state: started
+    ports:
+      - "8500:8500"
+      - "8301:8301"
+      - "8301:8301/udp"
+    command: -server -bootstrap-expect 1 -bind {{ ansible_eth1.ipv4.address }}
+    net: host
+    hostname: consul
+    restart_policy: always
+  when: infra_host is defined
+
+- name: Extend Systemd to customize Docker
+  template: src=docker.service.j2 dest=/etc/systemd/system/docker.service
+  when: infra_host is undefined
+  notify:
+    - Reload Systemd
+    - Restart Docker

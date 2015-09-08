@@ -1,0 +1,5 @@
+---
+# tasks file for base
+
+- name: Set Ubuntu Apt repository
+  template: src=sources.list.j2 dest=/etc/apt/sources.list

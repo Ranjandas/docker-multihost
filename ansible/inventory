@@ -1,0 +1,9 @@
+[infra]
+192.168.88.100 ansible_ssh_user=vagrant infra_host=True
+
+[docker]
+192.168.88.101 ansible_ssh_user=vagrant
+192.168.88.102 ansible_ssh_user=vagrant
+192.168.88.103 ansible_ssh_user=vagrant
+192.168.88.104 ansible_ssh_user=vagrant
+

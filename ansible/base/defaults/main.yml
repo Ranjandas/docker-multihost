@@ -1,0 +1,4 @@
+---
+# defaults file for base
+#
+ubuntu_fastest_mirror: mirror.optus.net

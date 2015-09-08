@@ -1,0 +1,7 @@
+---
+# defaults file for docker
+docker_gpg_key_id: 58118E89F3A912897C070ADBF76221572C52609D
+docker_gpg_key_server: "hkp://p80.pool.sks-keyservers.net:80"
+docker_apt_repository_url: 'deb https://apt.dockerproject.org/repo ubuntu-trusty experimental'
+docker_install_url: "https://get.docker.com/"
+docker_engine_version: 1.8.0~dev~git20150810.192121.0.0bfad28-0~trusty
